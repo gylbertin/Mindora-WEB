@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrl: './cadernos.css',
 })
 export class Cadernos {
-
+  
 }

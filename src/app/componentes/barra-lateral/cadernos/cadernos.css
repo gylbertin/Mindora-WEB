@@ -127,30 +127,41 @@ body {
   color: #0a2b79;
 }
 
+.container-editor {
+  width: 100%;
+  max-width: 800px;
+}
 
 .editor-area {
-  flex: 1;
-  margin-top: 18px;
-  background: white;
-  border-radius: 18px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.25);
-  padding: 25px;
-  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;    
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 
 .editor {
-  width: 730px;
-  height: 100%;
-  outline: none;
+  width: 100%;
+  max-width: 1400px;            
+  height: 100%;          
+  padding: 15px;
   color: #222;
-  font-size: 17px;
-  line-height: 1.6;
 
+  border: 1px solid #ccc;
+  border-radius: 8px;
 
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
+  overflow-y: auto;            
+  background: #fff;
+
+  font-size: 16px;
+  line-height: 1.5;
+  outline: none;
+
+  white-space: pre-wrap;       
+
+  resize: vertical;
 }
 
 
@@ -188,20 +199,20 @@ body {
 }
 
 
-.tool.align-left { background-image: url("text-left.png"); }
-.tool.align-center { background-image: url("text-center.png"); }
-.tool.align-right { background-image: url("justify-right.png"); }
-.tool.align-justify { background-image: url("justify.png"); }
+.tool.align-left { background-image: url("Assets/text-left.png"); }
+.tool.align-center { background-image: url("Assets/text-center.png"); }
+.tool.align-right { background-image: url("Assets/justify-right.png"); }
+.tool.align-justify { background-image: url("Assets/justify.png"); }
 
 
-.tool.bold { background-image: url("type-bold.png"); }
-.tool.italic { background-image: url("type-italic.png"); }
-.tool.underline { background-image: url("type-underline.png"); }
+.tool.bold { background-image: url("Assets/type-bold.png"); }
+.tool.italic { background-image: url("Assets/type-italic.png"); }
+.tool.underline { background-image: url("Assets/type-underline.png"); }
 
 
-.tool.color { background-image: url("colorirtexto.png"); }
-.tool.size { background-image: url("tamanhotexto.png"); }
-.tool.bullet { background-image: url("pontuartexto.png"); }
+.tool.color { background-image: url("Assets/colorirtexto.png"); }
+.tool.size { background-image: url("Assets/tamanhotexto.png"); }
+.tool.bullet { background-image: url("Assets/pontuartexto.png"); }
 
 
 

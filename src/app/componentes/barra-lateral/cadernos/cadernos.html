@@ -33,22 +33,34 @@
       </header>
 
       <section class="editor-area">
-        <div class="editor" contenteditable="true" aria-label="Editor de texto"></div>
+            <div id="texto" class="editor" contenteditable="true" aria-label="Editor de texto"></div>
+            <textarea id="htmlRaw" hidden></textarea>
       </section>
 
       <div class="toolbar" role="toolbar" aria-label="Barra de formatação">
-        <button class="tool align-left"></button>
-        <button class="tool align-center"></button>
-        <button class="tool align-right"></button>
-        <button class="tool align-justify"></button>
+        <button class="tool align-left" onclick="bold(1)"></button>
+        <button class="tool align-center" onclick="bold(2)" ></button>
+        <button class="tool align-right" onclick="bold(3)" ></button>
+        <button class="tool align-justify" onclick="bold(4)" ></button>
 
-        <button class="tool bold"></button>
-        <button class="tool italic"></button>
-        <button class="tool underline"></button>
+        <button class="tool bold" onclick="bold(5)" ></button>
+        <button class="tool italic" onclick="bold(6)" ></button>
+        <button class="tool underline" onclick="bold(7)" ></button>
 
-        <button class="tool color"></button>
-        <button class="tool bullet"></button>
+        <button class="tool color" onclick="applyColor()"></button>
+        <div id="mostraCores">
+
+        </div>
+        <button class="tool bullet" onclick="bold(8)"></button>
         <button class="tool size"></button>
+         <select (change)="setFontSize($event.target.value)" title="Tamanho">
+          <option value="">Tamanho</option>
+          <option value="1">10px</option>
+          <option value="2">13px</option>
+          <option value="3">16px</option>
+          <option value="4">18px</option>
+          <option value="5">24px</option>
+        </select>
       </div>
 
     </main>
@@ -62,6 +74,122 @@
       }
     });
   </script>
+  <script>
+// Referências
+const editor = document.getElementById("texto");
+const htmlRaw = document.getElementById("htmlRaw");
+
+
+// ======================================================
+// Função para pegar seleção atual dentro do contenteditable
+// ======================================================
+function getSelectedRange() {
+    const sel = window.getSelection();
+    if (!sel.rangeCount) return null;
+    return sel.getRangeAt(0);
+}
+
+
+// ======================================================
+// Atualiza textarea oculta com HTML bruto
+// ======================================================
+function updateRawHtml() {
+    htmlRaw.value = editor.innerHTML; // passa o texto para html puro
+}
+
+editor.addEventListener("input", updateRawHtml); // atualiza ao digitar
+
+
+// ======================================================
+// Função principal que insere HTML manualmente
+// ======================================================
+function insertHtmlAroundSelection(before, after) {
+    const range = getSelectedRange();
+    if (!range) return;
+
+    const selectedText = range.toString(); // texto selecionado
+
+    // cria o HTML manualmente
+    const wrapper = document.createElement("span"); // wrapper temporário
+    wrapper.innerHTML = before + selectedText + after; // insere o HTML
+
+    // remove seleção atual
+    range.deleteContents(); // apaga o conteúdo selecionado
+    range.insertNode(wrapper); // insere o novo nó com formatação
+
+    updateRawHtml();
+}
+
+
+// ======================================================
+// Função BOLD (e outras formatações)
+// ======================================================
+function bold(type) {
+    switch (type) {
+
+        case 1: // Alinhar esquerda
+            editor.style.textAlign = "left";
+            break;
+
+        case 2: // centro
+            editor.style.textAlign = "center";
+            break;
+
+        case 3: // direita
+            editor.style.textAlign = "right";
+            break;
+
+        case 4: // justificar
+            editor.style.textAlign = "justify";
+            break;
+
+        case 5: // bold
+            insertHtmlAroundSelection("<b>", "</b>");
+            break;
+
+        case 6: // italic
+            insertHtmlAroundSelection("<i>", "</i>");
+            break;
+
+        case 7: // underline
+            insertHtmlAroundSelection("<u>", "</u>");
+            break;
+
+        case 8: // bullet list
+            insertHtmlAroundSelection("<ul><li>", "</li></ul>");
+            break;
+
+        default:
+            console.log("Formato não reconhecido");
+    }
+
+    updateRawHtml();
+}
+
+
+// ======================================================
+// Tamanho de fonte
+// ======================================================
+function setFontSize(size) {
+    if (!size) return;
+
+    const range = getSelectedRange();
+    if (!range) return;
+
+    const span = document.createElement("span");
+    span.style.fontSize = size;
+    span.textContent = range.toString();
+
+    range.deleteContents();
+    range.insertNode(span);
+
+    updateRawHtml();
+}
+  function applyColor(color) {
+    insertHtmlAroundSelection(`<span style="color:${color}">`, "</span>");
+}
+
+</script>
 
 </body>
 </html>
