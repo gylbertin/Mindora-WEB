@@ -214,5 +214,62 @@ body {
 .tool.size { background-image: url("Assets/tamanhotexto.png"); }
 .tool.bullet { background-image: url("Assets/pontuartexto.png"); }
 
+.color-picker {
+    position: absolute;
+    background: #fff;
+    padding: 8px;
+    border-radius: 6px;
+    display: flex;
+    gap: 8px;
+    box-shadow: 0px 2px 10px rgba(0,0,0,0.2);
+    margin-top: -70px;
+    margin-left: 45%;
+    z-index: 10;
+}
 
+.color-picker.hidden {
+    display: none;
+}
 
+.color-option {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #333;
+}
+
+/* wrapper para posicionar a paleta */
+.tool-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+/* mantém a paleta corretamente abaixo do botão */
+#mostraCores {
+    position: absolute;
+    top: 35px;
+    left: 0;
+
+    background: white;
+    padding: 8px;
+    border-radius: 8px;
+    display: flex;
+    gap: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+
+    z-index: 999;
+}
+
+#mostraCores.hidden {
+    display: none;
+}
+
+/* bolinhas de cores */
+.color-option {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #333;
+}

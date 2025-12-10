@@ -47,13 +47,16 @@
         <button class="tool italic" onclick="bold(6)" ></button>
         <button class="tool underline" onclick="bold(7)" ></button>
 
-        <button class="tool color" onclick="applyColor()"></button>
-        <div id="mostraCores">
-
+        <button class="tool color" onclick="toggleColorPicker()"></button>
+        <div id="mostraCores" class="color-picker hidden">
+           <div class="color-option" style="background: red;"></div>
+          <div class="color-option" style="background: blue;"></div>
+          <div class="color-option" style="background: green;"></div>
+          <div class="color-option" style="background: yellow;"></div>
+          <div class="color-option" style="background: black;"></div>
         </div>
         <button class="tool bullet" onclick="bold(8)"></button>
-        <button class="tool size"></button>
-         <select (change)="setFontSize($event.target.value)" title="Tamanho">
+         <select onchange="setFontSize(this.value)" title="Tamanho">
           <option value="">Tamanho</option>
           <option value="1">10px</option>
           <option value="2">13px</option>
@@ -75,10 +78,23 @@
     });
   </script>
   <script>
+
+    const activeFormats = {
+      bold: false,
+      italic: false,
+      underline: false,
+      color: null
+    };
 // Referências
 const editor = document.getElementById("texto");
 const htmlRaw = document.getElementById("htmlRaw");
+const picker = document.getElementById("mostraCores");
+let activeColor = null; 
 
+  function toggleFormat(type) {
+    activeFormats[type] = !activeFormats[type];
+    button.classList.toggle("active");
+  }
 
 // ======================================================
 // Função para pegar seleção atual dentro do contenteditable
@@ -99,7 +115,20 @@ function updateRawHtml() {
 
 editor.addEventListener("input", updateRawHtml); // atualiza ao digitar
 
+editor.addEventListener("beforeinput", function (e) {
+    if (e.inputType === "insertText") {
+        e.preventDefault();
+        
+        let char = e.data;
 
+        if (activeFormats.bold) char = `<b>${char}</b>`;
+        if (activeFormats.italic) char = `<i>${char}</i>`;
+        if (activeFormats.underline) char = `<u>${char}</u>`;
+        if (activeFormats.size) char = `<span style="font-size:${activeFormats.size}px">${char}</span>`;
+        if (activeFormats.color) char = `<span style="color:${activeFormats.color}">${char}</span>`;
+        insertHtmlAtCursor(char);
+    }
+});
 // ======================================================
 // Função principal que insere HTML manualmente
 // ======================================================
@@ -143,20 +172,12 @@ function bold(type) {
             editor.style.textAlign = "justify";
             break;
 
-        case 5: // bold
-            insertHtmlAroundSelection("<b>", "</b>");
-            break;
-
-        case 6: // italic
-            insertHtmlAroundSelection("<i>", "</i>");
-            break;
-
-        case 7: // underline
-            insertHtmlAroundSelection("<u>", "</u>");
-            break;
+        case 5: toggleFormat("bold"); break;
+        case 6: toggleFormat("italic"); break;
+        case 7: toggleFormat("underline"); break;
 
         case 8: // bullet list
-            insertHtmlAroundSelection("<ul><li>", "</li></ul>");
+             insertHtmlAroundSelection("<ul><li>", "</li></ul>");
             break;
 
         default:
@@ -170,23 +191,81 @@ function bold(type) {
 // ======================================================
 // Tamanho de fonte
 // ======================================================
-function setFontSize(size) {
-    if (!size) return;
+function setFontSize(value) {
+     const map = {
+        "1": 10,
+        "2": 13,
+        "3": 16,
+        "4": 18,
+        "5": 24
+    };
 
-    const range = getSelectedRange();
-    if (!range) return;
-
-    const span = document.createElement("span");
-    span.style.fontSize = size;
-    span.textContent = range.toString();
-
-    range.deleteContents();
-    range.insertNode(span);
-
+    activeFormats.size = map[value] || null;
     updateRawHtml();
 }
   function applyColor(color) {
-    insertHtmlAroundSelection(`<span style="color:${color}">`, "</span>");
+   activeFormats.color = color;
+}
+
+function insertHtmlAtCursor(html) {
+    const sel = window.getSelection();
+    if (!sel.rangeCount) return;
+
+    const range = sel.getRangeAt(0);
+    range.deleteContents();
+
+    const temp = document.createElement("span");
+    temp.innerHTML = html;
+
+    const node = temp.firstChild;
+
+    range.insertNode(node);
+
+    range.setStartAfter(node);
+    range.setEndAfter(node);
+    sel.removeAllRanges();
+    sel.addRange(range);
+
+    updateRawHtml();
+}
+
+  function toggleColorPicker() {
+    picker.classList.toggle("hidden");
+}
+
+// clique em uma cor
+picker.addEventListener("click", function(e) {
+    if (e.target.classList.contains("color-option")) {
+
+        // pega a cor do botão
+        const cor = e.target.style.background;
+
+        // aplica no formato ativo
+        activeFormats.color = cor;
+
+        // fecha o seletor
+        picker.classList.add("hidden");
+    }
+});
+
+function insertList() {
+    const range = getSelectedRange();
+    if (!range) return;
+
+    const selectedText = range.toString() || "item"; // fallback
+
+    const ul = document.createElement("ul");
+    const li = document.createElement("li");
+    li.textContent = selectedText;
+    ul.appendChild(li);
+
+    // remove conteúdo selecionado
+    range.deleteContents();
+    
+    // insere a <ul>
+    range.insertNode(ul);
+
+    updateRawHtml();
 }
 
 </script>
