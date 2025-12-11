@@ -273,3 +273,12 @@ body {
     cursor: pointer;
     border: 2px solid #333;
 }
+
+.editor ul {
+    padding-left: 25px;   /* deixa a bolinha alinhada */
+    margin-left: 15px;    /* desloca a lista pra direita */
+}
+
+.editor li {
+    margin-left: 10px;    /* deixa o texto indentado */
+}
