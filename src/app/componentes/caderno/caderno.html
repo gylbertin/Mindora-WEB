@@ -38,7 +38,7 @@
           </button>
 
           <button class="new-session-btn" aria-label="Nova sessão">
-            <span>Nova tarefa</span>
+            <span>Novo caderno</span>
             <img src="Assets/add.png" alt="Adicionar">
           </button>
         </div>
@@ -46,7 +46,7 @@
 
       <div class="tasks-container">
 
-            <div class="task-section">
+            <div class="task-section" id="lista-cadernos">
             
             </div>
 
@@ -56,6 +56,209 @@
 
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+  const lista = document.getElementById("lista-cadernos");
+
+    let filtros = {
+    statusCaderno: null,
+    nomeCategoria: null,
+    sortBy: ["dataCriacaoCaderno"],
+    direction: "desc"
+    };
+
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const idUsuario = urlParams.get("idUsuario");
+
+  async function carregarCadernos() {
+  try {
+     const queryParams = new URLSearchParams();
+
+        if (filtros.statusCaderno)
+            queryParams.append("statusCaderno", filtros.statusCaderno);
+
+        if (filtros.nomeCategoria)
+            queryParams.append("nomeCategoria", filtros.nomeCategoria);
+
+        if (filtros.sortBy && filtros.sortBy.length > 0)
+            filtros.sortBy.forEach(s => queryParams.append("sortBy", s));
+
+        queryParams.append("direction", filtros.direction);
+
+        const url = `http://localhost:8080/cadernos/usuario/${idUsuario}?${queryParams.toString()}`;
+
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            throw new Error("Erro ao buscar cadernos");
+        }
+
+        const cadernos = await response.json();
+
+        // ===============================
+        // Renderização
+        // ===============================
+        lista.innerHTML = "";
+        lista.classList.add("cadernos-grid");
+
+        if (cadernos.length === 0) {
+            lista.innerHTML = "<p>Nenhum caderno encontrado.</p>";
+            return;
+        }
+
+        cadernos.forEach(caderno => {
+            const card = document.createElement("div");
+            card.classList.add("caderno-card");
+
+            card.innerHTML = `
+                <div 
+                    class="caderno-img" 
+                    style="background-image: url('${caderno.fotoCaderno || "Assets/images.jpg"}')">
+                </div>
+
+                <div class="caderno-body">
+                    <div class="caderno-titulo">
+                        ${caderno.tituloCaderno}
+                    </div>
+
+                    <div class="caderno-categorias">
+                        ${
+                            caderno.categorias && caderno.categorias.length > 0
+                                ? caderno.categorias.map(cat =>
+                                    `<span class="caderno-categoria">${cat.nomeCategoria}</span>`
+                                  ).join("")
+                                : `<span class="caderno-categoria vazio">Sem categoria</span>`
+                        }
+                    </div>
+                </div>
+            `;
+
+            // ===============================
+            // Navegação para o editor
+            // ===============================
+            card.addEventListener("click", () => {
+                window.location.href = `editor.html?id=${caderno.id}`;
+            });
+
+            lista.appendChild(card);
+        });
+
+    } catch (erro) {
+        console.error("Erro ao carregar cadernos:", erro);
+        lista.innerHTML = "<p>Erro ao carregar cadernos.</p>";
+    }
+}
+
+// ===============================
+// Inicialização
+// ===============================
+document.addEventListener("DOMContentLoaded", carregarCadernos);
+/////////////////////////////////////////////////////////////////////////////
+const btnNovoCaderno = document.querySelector(".new-session-btn");
+const modal = document.getElementById("modalNovoCaderno");
+const btnCancelar = document.getElementById("cancelarModal");
+
+btnNovoCaderno.addEventListener("click", () => {
+  modal.classList.remove("hidden");
+  carregarCategorias();
+});
+
+btnCancelar.addEventListener("click", () => {
+  modal.classList.add("hidden");
+});
+
+const categoriasSelect = document.getElementById("categoriasSelect");
+
+async function carregarCategorias() {
+  categoriasSelect.innerHTML = `<option>Carregando...</option>`;
+
+  try {
+    const response = await fetch(
+      `http://localhost:8080/categorias/${idUsuario}`
+    );
+
+    const categorias = await response.json();
+
+    categoriasSelect.innerHTML = `<option value="">Selecione</option>`;
+
+    categorias.forEach(cat => {
+      const option = document.createElement("option");
+      option.value = cat.id;
+      option.textContent = cat.nomeCategoria;
+      categoriasSelect.appendChild(option);
+    });
+
+  } catch (e) {
+    categoriasSelect.innerHTML = `<option>Erro ao carregar</option>`;
+  }
+
+
+}
+});
+
+/////////////////////////////////////////////////////////////////////////////
+
+  document.getElementById("criarCaderno").addEventListener("click", async () => {
+  const titulo = document.getElementById("tituloCaderno").value.trim();
+  const categoriaId = categoriasSelect.value;
+
+  if (!titulo) {
+    alert("Informe o título");
+    return;
+  }
+
+  try {
+    const response = await fetch("http://localhost:8080/cadernos", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        tituloCaderno: titulo,
+        categorias: categoriaId ? [{ id: categoriaId }] : [],
+        usuario: { id: idUsuario }
+      })
+    });
+
+    const novoCaderno = await response.json();
+
+    // fecha modal
+    modal.classList.add("hidden");
+
+    // redireciona para o editor
+    window.location.href =
+      `/editor.html?idCaderno=${novoCaderno.id}&idUsuario=${idUsuario}`;
+
+  } catch (error) {
+    console.error("Erro ao criar caderno", error);
+    alert("Erro ao criar caderno");
+  }
+});
+</script>
+
+  <div id="modalNovoCaderno" class="modal-overlay hidden">
+  <div class="modal">
+
+    <h2>Novo caderno</h2>
+
+    <label>
+      Título do caderno
+      <input type="text" id="tituloCaderno" placeholder="Ex: Matemática ENEM">
+    </label>
+
+    <label>
+      Categorias
+      <select id="categoriasSelect">
+        <option value="">Carregando categorias...</option>
+      </select>
+    </label>
+
+    <div class="modal-actions">
+      <button id="cancelarModal">Cancelar</button>
+      <button id="criarCaderno">Criar</button>
+    </div>
+
+  </div>
+</div>
 </body>
 </html>
 

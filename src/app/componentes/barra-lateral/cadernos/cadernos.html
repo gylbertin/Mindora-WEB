@@ -27,8 +27,8 @@
       <header class="top-bar">
         <h1 class="title">Cadernos</h1>
         <div class="actions">
-          <button class="btn delete" onclick="salvarCaderno()">Excluir</button>
-          <button class="btn save" onclick="excluirCaderno()">Salvar</button>
+          <button class="btn delete" onclick="excluirCaderno()">Excluir</button>
+          <button class="btn save" onclick="salvarCaderno()">Salvar</button>
         </div>
       </header>
 
@@ -324,6 +324,39 @@ async function excluirDocumento(id) {
     }
 }
 
+async function carregarCaderno() {
+  if (!id_caderno) return;
+
+  try {
+    const response = await fetch(
+      `http://localhost:8080/cadernos/${id_caderno}`
+    );
+
+    if (!response.ok) {
+      throw new Error("Erro ao buscar caderno");
+    }
+
+    const caderno = await response.json();
+
+    // título (se tiver input ou header)
+    if (caderno.tituloCaderno) {
+      document.querySelector(".title").textContent = caderno.tituloCaderno;
+    }
+
+    // conteúdo
+    if (caderno.conteudo) {
+      editor.innerHTML = caderno.conteudo;
+      updateRawHtml();
+    }
+    
+
+  } catch (erro) {
+    console.error("Erro ao carregar caderno:", erro);
+    alert("Erro ao carregar o caderno.");
+  }
+}
+
+  document.addEventListener("DOMContentLoaded", carregarCaderno);
 </script>
 
 </body>
