@@ -37,5 +37,51 @@
       </div>
     </div>
   </div>
+  <script>
+  const btnCadastrar = document.querySelector(".entrar");
+
+  btnCadastrar.addEventListener("click", async () => {
+    const usuario = document.getElementById("usuario").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const senha = document.getElementById("senha").value.trim();
+
+ 
+    if (!usuario || !email || !senha) {
+      alert("Preencha todos os campos.");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localHost:8080/usuarios", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          username: usuario,
+          email: email,
+          senha: senha
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error("Erro ao cadastrar usuário");
+      }
+
+      const usuarioCriado = await response.json();
+
+      const idUsuario = usuarioCriado.id;
+
+      alert("Cadastro realizado com sucesso!");
+
+     
+      window.location.href = "/componentes/barra-lateral/home-page/home-page.html?idUsuario=${idUsuario}";
+
+    } catch (error) {
+      console.error(error);
+      alert("Erro ao realizar cadastro.");
+    }
+  });
+</script>
 </body>
 </html>

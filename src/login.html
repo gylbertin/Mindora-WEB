@@ -34,5 +34,45 @@
       </div>
     </div>
   </div>
+
+  <script>
+async function login() {
+  const email = document.getElementById("email").value.trim();
+  const senha = document.getElementById("senha").value.trim();
+
+  if (!email || !senha) {
+    alert("Preencha todos os campos");
+    return;
+  }
+
+  try {
+    const response = await fetch("http://localhost:8080/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email: email,
+        senha: senha
+      })
+    });
+
+    if (!response.ok) {
+      alert("Email ou senha inválidos");
+      return;
+    }
+
+    // 🔹 A API retorna APENAS o ID (ex: 12)
+    const idUsuario = await response.json();
+
+    // 🔹 Redireciona passando o id na URL
+    window.location.href = `/componentes/barra-lateral/home-page/home-page.html?idUsuario=${idUsuario}`;
+
+  } catch (error) {
+    console.error("Erro no login:", error);
+    alert("Erro ao conectar com o servidor");
+  }
+}
+</script>
 </body>
 </html>
