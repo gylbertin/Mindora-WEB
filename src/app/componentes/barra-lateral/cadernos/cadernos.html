@@ -128,9 +128,7 @@ let activeColor = null;
     }
   }
 
-// ======================================================
-// Função para pegar seleção atual dentro do contenteditable
-// ======================================================
+
 function getSelectedRange() {
     const sel = window.getSelection();
     if (!sel.rangeCount) return null;
@@ -138,9 +136,7 @@ function getSelectedRange() {
 }
 
 
-// ======================================================
-// Atualiza textarea oculta com HTML bruto
-// ======================================================
+
 function updateRawHtml() {
     htmlRaw.value = editor.innerHTML; // passa o texto para html puro
 }
@@ -182,9 +178,7 @@ function insertHtmlAroundSelection(before, after) {
 }
 
 
-// ======================================================
-// Função BOLD (e outras formatações)
-// ======================================================
+
 function bold(type, button) {
   editor.focus();
 
@@ -210,7 +204,7 @@ function bold(type, button) {
         case 6: toggleFormat("italic",button); break;
         case 7: toggleFormat("underline", button); break;
 
-        case 8: // bullet list
+        case 8: // list
              insertHtmlAroundSelection("<ul><li>", "</li></ul>");
             break;
 
@@ -222,9 +216,6 @@ function bold(type, button) {
 }
 
 
-// ======================================================
-// Tamanho de fonte
-// ======================================================
 function setFontSize(value) {
      const map = {
         "1": 10,
@@ -267,7 +258,7 @@ function insertHtmlAtCursor(html) {
     picker.classList.toggle("hidden");
 }
 
-// clique em uma cor
+
 picker.addEventListener("click", function(e) {
     if (e.target.classList.contains("color-option")) {
 
@@ -286,14 +277,14 @@ function insertList() {
     const range = getSelectedRange();
     if (!range) return;
 
-    const selectedText = range.toString() || "item"; // fallback
+    const selectedText = range.toString() || "item"; 
 
     const ul = document.createElement("ul");
     const li = document.createElement("li");
     li.textContent = selectedText;
     ul.appendChild(li);
 
-    // remove conteúdo selecionado
+    
     range.deleteContents();
     
     // insere a <ul>
@@ -324,11 +315,11 @@ function insertList() {
             },
             body: JSON.stringify({
                 titulo_caderno: cadernoAtual.titulo_caderno,
-                conteudo: conteudo,   // opcional
+                conteudo: conteudo,   
                 status_caderno: statusCaderno,
                 id_usuario : {
                   id : cadernoAtual.id_usuario
-                }              // opcional
+                }             
             })
         });
 
@@ -371,7 +362,7 @@ async function excluirCaderno() {
 
         alert("Documento excluído!");
         window.location.href = `/src/app/componentes/caderno/caderno.html?idUsuario=${idUsuario}`;
-        
+
     } catch (erro) {
         // Erro de rede, servidor offline, etc
         console.error("Erro ao conectar com API:", erro);
@@ -395,7 +386,7 @@ async function carregarCaderno() {
 
     cadernoAtual = caderno;
 
-    // conteúdo
+
     if (caderno.conteudo) {
       editor.innerHTML = caderno.conteudo;
       updateRawHtml();

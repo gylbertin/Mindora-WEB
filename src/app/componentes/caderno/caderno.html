@@ -215,7 +215,7 @@ async function carregarCategorias() {
 
 
 }
-});
+
 
 /////////////////////////////////////////////////////////////////////////////
 
@@ -233,25 +233,33 @@ async function carregarCategorias() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        tituloCaderno: titulo,
+        titulo_caderno: titulo,
         categorias: categoriaId ? [{ id: categoriaId }] : [],
         usuario: { id: idUsuario }
       })
     });
 
+    if (!response.ok) {
+      const erro = await response.text();
+      throw new Error(erro);
+    }
+
     const novoCaderno = await response.json();
+    
 
     // fecha modal
     modal.classList.add("hidden");
 
     // redireciona para o editor
     window.location.href =
-      `/editor.html?idCaderno=${novoCaderno.id}&idUsuario=${idUsuario}`;
+      `/src/app/componentes/barra-lateral/cadernos/cadernos.html?id=${novoCaderno.id_caderno}&idUsuario=${idUsuario}`;
 
   } catch (error) {
     console.error("Erro ao criar caderno", error);
     alert("Erro ao criar caderno");
   }
+});
+
 });
 </script>
 
