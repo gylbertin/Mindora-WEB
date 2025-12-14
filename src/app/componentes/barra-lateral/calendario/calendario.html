@@ -42,6 +42,36 @@
   </main>
 
   <script>
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const idUsuario = urlParams.get("idUsuario");
+
+  document.addEventListener("DOMContentLoaded", function() {
+  const btnHome = document.querySelector(".menu-item.home");
+  const btnCalendar = document.querySelector(".menu-item.calendar");
+  const btnNotes = document.querySelector(".menu-item.notes");
+  const btnList = document.querySelector(".menu-item.list");
+  const btnUser = document.querySelector(".menu-item.user");
+    
+
+   btnHome.addEventListener("click", () => {
+    window.location.href = `/src/app/componentes/barra-lateral/home-page/home-page.html?idUsuario=${idUsuario}`;
+  });
+
+  btnCalendar.addEventListener("click", () => {
+    window.location.href = `/src/app/componentes/barra-lateral/calendario/calendario.html?idUsuario=${idUsuario}`;
+  });
+
+  btnNotes.addEventListener("click", () => {
+    window.location.href = `/src/app/componentes/caderno/caderno.html?idUsuario=${idUsuario}`;
+  });
+
+  btnList.addEventListener("click", () => {
+    window.location.href = `/src/app/componentes/barra-lateral/tarefas/tarefas.html?idUsuario=${idUsuario}`;
+  });
+
+  });
+
     const monthNames = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
 
     const sampleEvents = {

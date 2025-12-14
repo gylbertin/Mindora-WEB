@@ -81,19 +81,19 @@
   const btnUser = document.querySelector(".menu-item.user");
 
    btnHome.addEventListener("click", () => {
-    window.location.href = `home-page.html?idUsuario=${idUsuario}`;
+    window.location.href = `/src/app/componentes/barra-lateral/home-page/home-page.html?idUsuario=${idUsuario}`;
   });
 
   btnCalendar.addEventListener("click", () => {
-    window.location.href = `../calendario/calendario.html?idUsuario=${idUsuario}`;
+    window.location.href = `/src/app/componentes/barra-lateral/calendario/calendario.html?idUsuario=${idUsuario}`;
   });
 
   btnNotes.addEventListener("click", () => {
-    window.location.href = `../cadernos/caderno.html?idUsuario=${idUsuario}`;
+    window.location.href = `/src/app/componentes/caderno/caderno.html?idUsuario=${idUsuario}`;
   });
 
   btnList.addEventListener("click", () => {
-    window.location.href = `../tarefas/tarefas.html?idUsuario=${idUsuario}`;
+    window.location.href = `/src/app/componentes/barra-lateral/tarefas/tarefas.html?idUsuario=${idUsuario}`;
   });
 
 

@@ -62,7 +62,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const idUsuario = params.get("idUsuario");
 
@@ -72,6 +72,28 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   carregarTarefas(idUsuario);
+
+  const btnHome = document.querySelector(".menu-item.home");
+  const btnCalendar = document.querySelector(".menu-item.calendar");
+  const btnNotes = document.querySelector(".menu-item.notes");
+  const btnList = document.querySelector(".menu-item.list");
+  const btnUser = document.querySelector(".menu-item.user");
+
+   btnHome.addEventListener("click", () => {
+    window.location.href = `/src/app/componentes/barra-lateral/home-page/home-page.html?idUsuario=${idUsuario}`;
+  });
+
+  btnCalendar.addEventListener("click", () => {
+    window.location.href = `/src/app/componentes/barra-lateral/calendario/calendario.html?idUsuario=${idUsuario}`;
+  });
+
+  btnNotes.addEventListener("click", () => {
+    window.location.href = `/src/app/componentes/caderno/caderno.html?idUsuario=${idUsuario}`;
+  });
+
+  btnList.addEventListener("click", () => {
+    window.location.href = `/src/app/componentes/barra-lateral/tarefas/tarefas.html?idUsuario=${idUsuario}`;
+  });
 
   const modal = document.getElementById("modalTarefa");
   const btnNova = document.getElementById("btnNovaTarefa");

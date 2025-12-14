@@ -38,14 +38,14 @@
       </section>
 
       <div class="toolbar" role="toolbar" aria-label="Barra de formatação">
-        <button class="tool align-left" onclick="bold(1)"></button>
-        <button class="tool align-center" onclick="bold(2)" ></button>
-        <button class="tool align-right" onclick="bold(3)" ></button>
-        <button class="tool align-justify" onclick="bold(4)" ></button>
+        <button class="tool align-left" onmousedown="bold(1, this)"></button>
+        <button class="tool align-center" onmousedown="bold(2, this)" ></button>
+        <button class="tool align-right" onmousedown="bold(3, this)" ></button>
+        <button class="tool align-justify" onmousedown="bold(4, this)" ></button>
 
-        <button class="tool bold" onclick="bold(5)" ></button>
-        <button class="tool italic" onclick="bold(6)" ></button>
-        <button class="tool underline" onclick="bold(7)" ></button>
+        <button class="tool bold" onmousedown="bold(5, this)" ></button>
+        <button class="tool italic" onmousedown="bold(6, this)" ></button>
+        <button class="tool underline" onmousedown="bold(7, this)" ></button>
 
         <button class="tool color" onclick="toggleColorPicker()"></button>
         <div id="mostraCores" class="color-picker hidden">
@@ -76,8 +76,37 @@
         e.preventDefault();
       }
     });
+
+    
   </script>
   <script>
+
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const idUsuario = urlParams.get("idUsuario");
+
+  const btnHome = document.querySelector(".menu-item.home");
+  const btnCalendar = document.querySelector(".menu-item.calendar");
+  const btnNotes = document.querySelector(".menu-item.notes");
+  const btnList = document.querySelector(".menu-item.list");
+  const btnUser = document.querySelector(".menu-item.user");
+
+   btnHome.addEventListener("click", () => {
+    window.location.href = `/src/app/componentes/barra-lateral/home-page/home-page.html?idUsuario=${idUsuario}`;
+  });
+
+  btnCalendar.addEventListener("click", () => {
+    window.location.href = `/src/app/componentes/barra-lateral/calendario/calendario.html?idUsuario=${idUsuario}`;
+  });
+
+  btnNotes.addEventListener("click", () => {
+    window.location.href = `/src/app/componentes/caderno/caderno.html?idUsuario=${idUsuario}`;
+  });
+
+  btnList.addEventListener("click", () => {
+    window.location.href = `/src/app/componentes/barra-lateral/tarefas/tarefas.html?idUsuario=${idUsuario}`;
+  });
+    
 
     const activeFormats = {
       bold: false,
@@ -85,15 +114,18 @@
       underline: false,
       color: null
     };
+
 // Referências
 const editor = document.getElementById("texto");
 const htmlRaw = document.getElementById("htmlRaw");
 const picker = document.getElementById("mostraCores");
 let activeColor = null; 
 
-  function toggleFormat(type) {
+  function toggleFormat(type, button) {
     activeFormats[type] = !activeFormats[type];
-    button.classList.toggle("active");
+    if (button) {
+      button.classList.toggle("active", activeFormats[type]);
+    }
   }
 
 // ======================================================
@@ -153,7 +185,9 @@ function insertHtmlAroundSelection(before, after) {
 // ======================================================
 // Função BOLD (e outras formatações)
 // ======================================================
-function bold(type) {
+function bold(type, button) {
+  editor.focus();
+
     switch (type) {
 
         case 1: // Alinhar esquerda
@@ -172,9 +206,9 @@ function bold(type) {
             editor.style.textAlign = "justify";
             break;
 
-        case 5: toggleFormat("bold"); break;
-        case 6: toggleFormat("italic"); break;
-        case 7: toggleFormat("underline"); break;
+        case 5: toggleFormat("bold", button); break;
+        case 6: toggleFormat("italic",button); break;
+        case 7: toggleFormat("underline", button); break;
 
         case 8: // bullet list
              insertHtmlAroundSelection("<ul><li>", "</li></ul>");
@@ -356,7 +390,10 @@ async function carregarCaderno() {
   }
 }
 
-  document.addEventListener("DOMContentLoaded", carregarCaderno);
+  document.addEventListener("DOMContentLoaded", function() {
+    carregarCaderno();
+
+  });
 </script>
 
 </body>
