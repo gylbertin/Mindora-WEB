@@ -59,7 +59,7 @@ body {
   flex-direction: column;
   padding: 18px 28px;
   gap: 18px;
-  align-items: flex-end;
+  align-items: center;
 }
 
 .top-bar {
@@ -156,4 +156,78 @@ body {
   .main { padding: 12px; align-items: center; }
   :root { --card-width: calc(100% - 40px); }
   .top-bar, .tasks-container { width: var(--card-width); }
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  width: 400px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modal-content input,
+.modal-content textarea,
+.modal-content select {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.task-actions {
+  position: relative;
+}
+
+.menu-icon {
+  cursor: pointer;
+}
+
+.dropdown {
+  position: absolute;
+  right: 0;
+  margin-right: 12%;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  z-index: 20;
+}
+
+.dropdown.hidden {
+  display: none;
+}
+
+.dropdown button {
+  padding: 8px 12px;
+  width: 100%;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: #e74c3c;
+  font-weight: 500;
+}
+
+.dropdown button:hover {
+  background: #fceaea;
 }

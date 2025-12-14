@@ -28,93 +28,17 @@
       <section class="card tarefas" aria-labelledby="tarefas-title">
         <h3 id="tarefas-title" class="title">Tarefas</h3>
 
-        <div class="task">
-          <div class="check done" aria-hidden="true">
-            <img class="check-icon" src="Assets/concluido.png" alt="feito">
-          </div>
-          <div class="task-info">
-            <strong>Organizar documentos</strong>
-            <span class="date">18/12/2025 - 18/11/2025</span>
-          </div>
-          <span class="tag medium">Desenvolvimento</span>
-        </div>
-
-        <div class="task">
-          <div class="check done" aria-hidden="true">
-            <img class="check-icon" src="Assets/concluido.png" alt="feito">
-          </div>
-          <div class="task-info">
-            <strong>Organizar cadernos</strong>
-            <span class="date">24/11/2025 - 22/12/2025</span>
-          </div>
-          <span class="tag high">Importante</span>
-        </div>
-
-        <div class="task">
-          <div class="check" aria-hidden="true">
-            <img class="check-icon" src="Assets/check-circle.png" alt="">
-          </div>
-          <div class="task-info">
-            <strong>Criar rascunho / protótipo</strong>
-            <span class="date">24/11/2025 - 22/12/2025</span>
-          </div>
-          <span class="tag high">Importante</span>
-        </div>
-
-        <div class="task">
-          <div class="check" aria-hidden="true">
-            <img class="check-icon" src="Assets/check-circle.png" alt="">
-          </div>
-          <div class="task-info">
-            <strong>Rascunhar ideia - Mindora</strong>
-            <span class="date">24/11/2025 - 22/12/2025</span>
-          </div>
-          <span class="tag medium">Desenvolvimento</span>
-        </div>
-
-        <div class="task">
-          <div class="check" aria-hidden="true">
-            <img class="check-icon" src="Assets/check-circle.png" alt="">
-          </div>
-          <div class="task-info">
-            <strong>Atualizar ideias</strong>
-            <span class="date">24/11/2025 - 22/12/2025</span>
-          </div>
-          <span class="tag high">Importante</span>
-        </div>
+        <div id="listaTarefas"></div>
       </section>
 
       <section class="card cadernos" aria-labelledby="cadernos-title">
         <h3 id="cadernos-title" class="title">Cadernos recentes</h3>
 
-        <div class="notebooks" role="list">
+        <div class="notebooks" role="list" id="listaCadernos">
 
-          <div class="notebook black" role="listitem">
-            <img class="notebook-cover" src="caderno_preto.png" alt="Capa caderno Angular">
-            <span>Angular - aula 2</span>
-            <small>3 dias atrás</small>
-          </div>
-
-          <div class="notebook darkblue" role="listitem">
-            <img class="notebook-cover" src="caderno_azul_escuro.png" alt="Capa caderno">
-            <span>Caderno sem título</span>
-            <small>3 dias atrás</small>
-          </div>
-
-          <div class="notebook blue" role="listitem">
-            <img class="notebook-cover" src="Assets/caderno_azul.png" alt="Capa caderno">
-            <span>Caderno sem título</span>
-            <small>3 dias atrás</small>
-          </div>
-
-          <div class="notebook darkblue" role="listitem">
-            <img class="notebook-cover" src="Assets/caderno_azul.png" alt="Capa caderno">
-            <span>Caderno sem título</span>
-            <small>3 dias atrás</small>
-          </div>
         </div>
 
-        <button class="novo" aria-label="Criar caderno">Novo +</button>
+        <button class="novo" aria-label="Criar caderno" id="btnNovoCaderno">Novo +</button>
       </section>
 
       <section class="card calendario" aria-labelledby="calendario-title">
@@ -140,6 +64,297 @@
 
     </div>
   </main>
+  
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+  const idUsuario = params.get("idUsuario");
+
+  if (!idUsuario) {
+    alert("Usuário não identificado");
+  }
+
+  const btnHome = document.querySelector(".menu-item.home");
+  const btnCalendar = document.querySelector(".menu-item.calendar");
+  const btnNotes = document.querySelector(".menu-item.notes");
+  const btnList = document.querySelector(".menu-item.list");
+  const btnUser = document.querySelector(".menu-item.user");
+
+   btnHome.addEventListener("click", () => {
+    window.location.href = `home-page.html?idUsuario=${idUsuario}`;
+  });
+
+  btnCalendar.addEventListener("click", () => {
+    window.location.href = `../calendario/calendario.html?idUsuario=${idUsuario}`;
+  });
+
+  btnNotes.addEventListener("click", () => {
+    window.location.href = `../cadernos/caderno.html?idUsuario=${idUsuario}`;
+  });
+
+  btnList.addEventListener("click", () => {
+    window.location.href = `../tarefas/tarefas.html?idUsuario=${idUsuario}`;
+  });
+
+
+  const modal = document.getElementById("modalCaderno");
+  const btnNovo = document.getElementById("btnNovoCaderno");
+  const btnCancelar = document.getElementById("btnCancelar");
+  const categoriasSelect = document.getElementById("categoriasSelect");
+
+   btnNovo.addEventListener("click", () => {
+    modal.classList.remove("hidden");
+    carregarCategorias(idUsuario);
+  });
+
+  btnCancelar.addEventListener("click", () => {
+    modal.classList.add("hidden");
+  });
+
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.classList.add("hidden");
+    }
+  });
+
+  carregarTarefasHome(idUsuario);
+  carregarCadernos(idUsuario);
+
+
+async function carregarCadernos(idUsuario) {
+  try {
+    const response = await fetch(
+      `http://localhost:8080/cadernos/usuario/${idUsuario}`,
+      { method: "GET" }
+    );
+
+    if (!response.ok) {
+      throw new Error("Erro ao buscar cadernos");
+    }
+
+    const cadernos = await response.json();
+    renderizarCadernos(cadernos, idUsuario);
+
+  } catch (error) {
+    console.error(error);
+    alert("Erro ao carregar cadernos");
+  }
+}
+
+ function renderizarCadernos(cadernos, idUsuario) {
+  const container = document.getElementById("listaCadernos");
+  container.innerHTML = "";
+
+  if (!cadernos.length) {
+    container.innerHTML = "<p>Nenhum caderno encontrado</p>";
+    return;
+  }
+
+  cadernos.forEach(caderno => {
+    const div = document.createElement("div");
+    div.classList.add("notebook", "blue");
+    div.setAttribute("role", "listitem");
+
+    div.innerHTML = `
+      <img class="notebook-cover" src="Assets/caderno_azul.png" alt="Capa caderno">
+      <span>${caderno.titulo_caderno}</span>
+      <small>${formatarData(caderno.dataCriacao)}</small>
+    `;
+
+    
+    div.addEventListener("click", () => {
+        window.location.href = `cadernos.html?id=${caderno.id}`;
+    });
+
+    container.appendChild(div);
+  });
+}
+
+  function formatarData(data) {
+  if (!data) return "—";
+  return new Date(data).toLocaleDateString("pt-BR");
+}
+
+
+  async function carregarCategorias() {
+  categoriasSelect.innerHTML = `<option>Carregando...</option>`;
+
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const idUsuario = params.get("idUsuario");
+
+    const response = await fetch(
+      `http://localhost:8080/categorias/${idUsuario}`
+    );
+
+    if (!response.ok) {
+      throw new Error("Erro ao buscar categorias");
+    }
+
+    const categorias = await response.json();
+
+    categoriasSelect.innerHTML = `<option value="">Selecione</option>`;
+
+    categorias.forEach(cat => {
+      const option = document.createElement("option");
+      option.value = cat.id;
+      option.textContent = cat.nomeCategoria;
+      categoriasSelect.appendChild(option);
+    });
+
+  } catch (e) {
+    console.error(e);
+    categoriasSelect.innerHTML = `<option>Erro ao carregar</option>`;
+  }
+}
+
+});
+  </script>
+
+  <script>
+    async function carregarTarefasHome(idUsuario) {
+  try {
+    const response = await fetch(
+      `http://localhost:8080/tarefas/usuario/${idUsuario}`
+    );
+
+    if (!response.ok) {
+      throw new Error("Erro ao buscar tarefas");
+    }
+
+    const tarefas = await response.json();
+    renderizarTarefasHome(tarefas);
+
+  } catch (e) {
+    console.error(e);
+    alert("Erro ao carregar tarefas");
+  }
+}
+  </script>
+
+  <script>
+function renderizarTarefasHome(tarefas) {
+  const container = document.getElementById("listaTarefas");
+  container.innerHTML = "";
+
+  if (!tarefas.length) {
+    container.innerHTML = "<p>Nenhuma tarefa encontrada</p>";
+    return;
+  }
+
+  tarefas.forEach(tarefa => {
+    const concluida = tarefa.statusTarefa === "REALIZADO";
+
+    const task = document.createElement("div");
+    task.classList.add("task");
+    task.dataset.id = tarefa.id;
+
+    task.innerHTML = `
+      <div class="check ${concluida ? "done" : ""}">
+        <input 
+          type="checkbox" 
+          ${concluida ? "checked" : ""} 
+        />
+      </div>
+
+      <div class="task-info">
+        <strong>${tarefa.tituloTarefa}</strong>
+        <span class="date">${formatarData(tarefa.dataVencimento)}</span>
+      </div>
+
+      <span class="tag ${getClassePrioridade(tarefa.prioridade)}">
+        ${getTextoPrioridade(tarefa.prioridade)}
+      </span>
+    `;
+
+    const checkbox = task.querySelector("input");
+    checkbox.addEventListener("change", () => {
+      atualizarStatusTarefaHome(tarefa, checkbox.checked, task);
+    });
+
+    container.appendChild(task);
+  });
+}
+</script>
+
+<script>
+async function atualizarStatusTarefaHome(tarefa, concluida, taskElement) {
+  const body = {
+    tituloTarefa: tarefa.tituloTarefa,
+    descricao: tarefa.descricao,
+    statusTarefa: concluida ? "REALIZADO" : "PENDENTE",
+    prioridade: tarefa.prioridade,
+    data_vencimento: tarefa.dataVencimento,
+    usuario: {
+      id: tarefa.usuario.id
+    }
+  };
+
+  try {
+    const response = await fetch(
+      `http://localhost:8080/tarefas/${tarefa.id}`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Erro ao atualizar tarefa");
+    }
+
+    // Atualiza visualmente sem reload
+    taskElement.querySelector(".check").classList.toggle("done", concluida);
+
+  } catch (e) {
+    alert("Erro ao atualizar tarefa");
+    console.error(e);
+  }
+  }
+
+  function formatarData(data) {
+  if (!data) return "—";
+  return new Date(data).toLocaleDateString("pt-BR");
+  }
+
+  function getTextoPrioridade(prioridade) {
+  if (prioridade === 3) return "Importante";
+  if (prioridade === 2) return "Desenvolvimento";
+  return "Baixa";
+  }
+
+  function getClassePrioridade(prioridade) {
+  if (prioridade === 3) return "high";
+  if (prioridade === 2) return "medium";
+  return "low";
+  }
+</script>
+
+  <div class="modal hidden" id="modalCaderno">
+  <div class="modal-content">
+
+    <h3>Novo Caderno</h3>
+
+    <label for="tituloCaderno">Título</label>
+    <input
+      type="text"
+      id="tituloCaderno"
+      placeholder="Nome do caderno"
+    />
+
+    <label for="categoriasSelect">Categoria</label>
+    <select id="categoriasSelect">
+      <option value="">Carregando categorias...</option>
+    </select>
+
+    <div class="modal-actions">
+      <button id="btnCancelar">Cancelar</button>
+      <button id="btnCriarCaderno">Criar</button>
+    </div>
+
+  </div>
+  </div>
 </body>
 </html>
 

@@ -6,13 +6,13 @@
   <title>Mindora - Tarefas</title>
 
   <link rel="stylesheet" href="caderno.css">
-  <link rel="icon" type="image/x-icon" href="Assets/logoicon.ico">
+  <link rel="icon" type="image/x-icon" href="assets/logoicon1.ico">
 </head>
 <body>
     
   <div class="container">
     <aside class="sidebar">
-      <img src="Assets/logoM.png" class="logo" alt="logo">
+      <img src="assets/logoM.png" class="logo" alt="logo">
 
       <nav class="menu">
         <button class="menu-item home" aria-label="Início"></button>
@@ -26,20 +26,20 @@
     <main class="main">
 
       <header class="top-bar">
-        <h1 class="top-title">Tarefas</h1>
+        <h1 class="top-title">Cadernos</h1>
 
         <div class="top-actions">
           <button class="icon-btn" aria-label="Filtro">
-            <img src="Assets/filter.png" alt="Filtro">
+            <img src="assets/filter.png" alt="Filtro">
           </button>
 
           <button class="icon-btn" aria-label="Layout">
-            <img src="Assets/layout.png" alt="Layout">
+            <img src="assets/layout.png" alt="Layout">
           </button>
 
           <button class="new-session-btn" aria-label="Nova sessão">
             <span>Novo caderno</span>
-            <img src="Assets/add.png" alt="Adicionar">
+            <img src="assets/add.png" alt="Adicionar">
           </button>
         </div>
       </header>
@@ -59,6 +59,9 @@
   <script>
     document.addEventListener("DOMContentLoaded", function() {
   const lista = document.getElementById("lista-cadernos");
+  const btnNovoCaderno = document.querySelector(".new-session-btn");
+  const modal = document.getElementById("modalNovoCaderno");
+  const btnCancelar = document.getElementById("cancelarModal");
 
     let filtros = {
     statusCaderno: null,
@@ -119,14 +122,14 @@
 
                 <div class="caderno-body">
                     <div class="caderno-titulo">
-                        ${caderno.tituloCaderno}
+                        ${caderno.titulo_caderno}
                     </div>
 
                     <div class="caderno-categorias">
                         ${
                             caderno.categorias && caderno.categorias.length > 0
-                                ? caderno.categorias.map(cat =>
-                                    `<span class="caderno-categoria">${cat.nomeCategoria}</span>`
+                                ? caderno.categorias.map(cat =>       // sem categoria
+                                    `<span class="caderno-categoria">Sem categoria</span>`
                                   ).join("")
                                 : `<span class="caderno-categoria vazio">Sem categoria</span>`
                         }
@@ -138,7 +141,7 @@
             // Navegação para o editor
             // ===============================
             card.addEventListener("click", () => {
-                window.location.href = `editor.html?id=${caderno.id}`;
+                window.location.href = `../barra-lateral/cadernos/cadernos.html?id=${caderno.id_caderno}`;
             });
 
             lista.appendChild(card);
@@ -150,14 +153,9 @@
     }
 }
 
-// ===============================
-// Inicialização
-// ===============================
-document.addEventListener("DOMContentLoaded", carregarCadernos);
+  // Carrega os cadernos ao iniciar
+  carregarCadernos();
 /////////////////////////////////////////////////////////////////////////////
-const btnNovoCaderno = document.querySelector(".new-session-btn");
-const modal = document.getElementById("modalNovoCaderno");
-const btnCancelar = document.getElementById("cancelarModal");
 
 btnNovoCaderno.addEventListener("click", () => {
   modal.classList.remove("hidden");
@@ -261,4 +259,5 @@ async function carregarCategorias() {
 </div>
 </body>
 </html>
+
 

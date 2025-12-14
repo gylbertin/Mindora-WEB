@@ -271,11 +271,11 @@ function insertList() {
   const parametros = new URLSearchParams(window.location.search);
 
   const id_caderno = parametros.get("id");
-  const titulo = parametros.get("titulo");
-  const idUsuario = parametros.get("idUsuario");
+  const statusCaderno = "RASCUNHO";
 
   async function salvarCaderno() {
     const conteudo = editor.innerHTML;
+    cadernoDesatualizado = carregarCaderno();
     try {
         const response = await fetch(`http://localhost:8080/cadernos/${id_caderno}`, {
             method: "POST",
@@ -283,11 +283,11 @@ function insertList() {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                titulo_caderno: titulo,
+                titulo_caderno: cadernoDesatualizado.titulo_caderno,
                 conteudo: conteudo,   // opcional
                 status_caderno: statusCaderno,
                 id_usuario : {
-                  id : idUsuario
+                  id : cadernoDesatualizado.id_usuario
                 }              // opcional
             })
         });
@@ -349,7 +349,7 @@ async function carregarCaderno() {
       updateRawHtml();
     }
     
-
+    return caderno;
   } catch (erro) {
     console.error("Erro ao carregar caderno:", erro);
     alert("Erro ao carregar o caderno.");

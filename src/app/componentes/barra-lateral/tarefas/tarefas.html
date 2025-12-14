@@ -37,7 +37,7 @@
             <img src="Assets/layout.png" alt="Layout">
           </button>
 
-          <button class="new-session-btn" aria-label="Nova sessão">
+          <button class="new-session-btn" aria-label="Nova sessão" id="btnNovaTarefa">
             <span>Nova tarefa</span>
             <img src="Assets/add.png" alt="Adicionar">
           </button>
@@ -50,162 +50,275 @@
             <h2 class="section-title">Projetos Faculdade</h2>
             <hr>
 
-            <div class="task-row">
-                <div class="task-left">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="checkDefault">
-                        <label class="form-check-label" for="checkDefault">
-                            <span class="task-name">Desenvolvimento do Projeto</span>
-                        </label>
-                        </div>  
-                </div>
-                <div class="task-right">
-                    <span class="status done">Concluído</span>
-                    <span class="task-date">11/11/2025</span>
-                    <img src="Assets/mover.png" class="menu-icon" alt="">
-                </div>
-            </div>
+            <div class="tasks-container" id="tasksContainer">
 
-            <div class="task-row">
-                <div class="task-left">
-                    <img src="Assets/concluido.png" class="task-icon" alt="">
-                    <span class="task-name">Pesquisa Teórica</span>
-                </div>
-                <div class="task-right">
-                    <span class="status done">Concluído</span>
-                    <span class="task-date">10/11/2025</span>
-                    <img src="Assets/mover.png" class="menu-icon" alt="">
-                </div>
-            </div>
-
-            <div class="task-row">
-                <div class="task-left">
-                    <img src="Assets/concluido.png" class="task-icon" alt="">
-                    <span class="task-name">Análise de Dados</span>
-                </div>
-                <div class="task-right">
-                    <span class="status done">Concluído</span>
-                    <span class="task-date">09/12/2025</span>
-                    <img src="Assets/mover.png" class="menu-icon" alt="">
-                </div>
-            </div>
-
-            <div class="task-row">
-                <div class="task-left">
-                    <img src="Assets/check-circle.png" class="task-icon" alt="">
-                    <span class="task-name">Atualizar calendário acadêmico</span>
-                </div>
-                <div class="task-right">
-                    <span class="status progress">Desenvolvimento</span>
-                    <span class="task-date">16/12/2025</span>
-                    <img src="Assets/mover.png" class="menu-icon" alt="">
-                </div>
-            </div>
-
-            <div class="task-row">
-                <div class="task-left">
-                    <img src="Assets/check-circle.png" class="task-icon" alt="">
-                    <span class="task-name">Conclusão Final</span>
-                </div>
-                <div class="task-right">
-                    <span class="status progress">Desenvolvimento</span>
-                    <span class="task-date">13/12/2025</span>
-                    <img src="Assets/mover.png" class="menu-icon" alt="">
-                </div>
-            </div>
-
-            <div class="task-row">
-                <div class="task-left">
-                    <img src="Assets/check-circle.png" class="task-icon" alt="">
-                    <span class="task-name">Preparação da Apresentação</span>
-                </div>
-                <div class="task-right">
-                    <span class="status progress">Desenvolvimento</span>
-                    <span class="task-date">15/12/2025</span>
-                    <img src="Assets/mover.png" class="menu-icon" alt="">
-                </div>
             </div>
         </div>
-
-            <div class="task-row">
-                <div class="task-left">
-                    <img src="Assets/concluido.png" class="task-icon" alt="">
-                    <span class="task-name">Conferir Fórmulas</span>
-                </div>
-                <div class="task-right">
-                    <span class="status done">Concluído</span>
-                    <span class="task-date">01/11/2025</span>
-                    <img src="Assets/mover.png" class="menu-icon" alt="">
-                </div>
-            </div>
-
-            <div class="task-row">
-                <div class="task-left">
-                    <img src="Assets/concluido.png" class="task-icon" alt="">
-                    <span class="task-name">Pesquisa Teórica</span>
-                </div>
-                <div class="task-right">
-                    <span class="status done">Concluído</span>
-                    <span class="task-date">10/11/2025</span>
-                    <img src="Assets/mover.png" class="menu-icon" alt="">
-                </div>
-            </div>
-
-            <div class="task-row">
-                <div class="task-left">
-                    <img src="Assets/concluido.png" class="task-icon" alt="">
-                    <span class="task-name">Revisar Cálculos</span>
-                </div>
-                <div class="task-right">
-                    <span class="status done">Concluído</span>
-                    <span class="task-date">19/12/2025</span>
-                    <img src="Assets/mover.png" class="menu-icon" alt="">
-                </div>
-            </div>
-
-            <div class="task-row">
-                <div class="task-left">
-                    <img src="Assets/check-circle.png" class="task-icon" alt="">
-                    <span class="task-name">Resolver Lista</span>
-                </div>
-                <div class="task-right">
-                    <span class="status progress">Desenvolvimento</span>
-                    <span class="task-date">24/12/2025</span>
-                    <img src="Assets/mover.png" class="menu-icon" alt="">
-                </div>
-            </div>
-
-            <div class="task-row">
-                <div class="task-left">
-                    <img src="Assets/check-circle.png" class="task-icon" alt="">
-                    <span class="task-name">Finalizar Projeto</span>
-                </div>
-                <div class="task-right">
-                    <span class="status progress">Desenvolvimento</span>
-                    <span class="task-date">25/12/2025</span>
-                    <img src="Assets/mover.png" class="menu-icon" alt="">
-                </div>
-            </div>
-
-            <div class="task-row">
-                <div class="task-left">
-                    <img src="Assets/check-circle.png" class="task-icon" alt="">
-                    <span class="task-name">Preparação da Apresentação</span>
-                </div>
-                <div class="task-right">
-                    <span class="status progress">Desenvolvimento</span>
-                    <span class="task-date">28/12/2025</span>
-                    <img src="Assets/mover.png" class="menu-icon" alt="">
-                </div>
-            </div>
-
         </div>
-
 
     </main>
 
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+document.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+  const idUsuario = params.get("idUsuario");
+
+  if (!idUsuario) {
+    alert("Usuário não identificado");
+    return;
+  }
+
+  carregarTarefas(idUsuario);
+
+  const modal = document.getElementById("modalTarefa");
+  const btnNova = document.getElementById("btnNovaTarefa");
+  const btnCancelar = document.getElementById("btnCancelarTarefa");
+  const btnSalvar = document.getElementById("btnSalvarTarefa");
+
+  if (!idUsuario) {
+    alert("Usuário não identificado");
+  }
+
+  // abrir modal
+  btnNova.addEventListener("click", () => {
+    modal.classList.remove("hidden");
+  });
+
+  // fechar modal
+  btnCancelar.addEventListener("click", () => {
+    modal.classList.add("hidden");
+  });
+
+  // fechar clicando fora
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) modal.classList.add("hidden");
+  });
+
+  // salvar tarefa
+  btnSalvar.addEventListener("click", async () => {
+    const titulo = document.getElementById("tituloTarefa").value.trim();
+    const descricao = document.getElementById("descricaoTarefa").value.trim();
+    const prioridade = document.getElementById("prioridadeTarefa").value;
+    const dataVencimento = document.getElementById("dataVencimento").value;
+
+    if (!titulo || !dataVencimento) {
+      alert("Preencha os campos obrigatórios");
+      return;
+    }
+
+    const tarefa = {
+      tituloTarefa: titulo,
+      descricao: descricao,
+      statusTarefa: "PENDENTE",
+      prioridade: Number(prioridade),
+      data_vencimento: new Date(dataVencimento).toISOString(),
+      usuario: {
+        id: Number(idUsuario)
+      }
+    };
+
+    try {
+      const response = await fetch("http://localhost:8080/tarefas", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(tarefa)
+      });
+
+      if (!response.ok) {
+        throw new Error("Erro ao cadastrar tarefa");
+      }
+
+      alert("Tarefa cadastrada com sucesso!");
+      modal.classList.add("hidden");
+      location.reload();
+
+    } catch (e) {
+      console.error(e);
+      alert("Erro ao salvar tarefa");
+    }
+  });
+});
+
+
+async function carregarTarefas(idUsuario) {
+  try {
+    const response = await fetch(
+      `http://localhost:8080/tarefas/usuario/${idUsuario}`
+    );
+
+    if (!response.ok) throw new Error("Erro ao buscar tarefas");
+
+    const tarefas = await response.json();
+    renderizarTarefas(tarefas);
+
+  } catch (e) {
+    console.error(e);
+    alert("Erro ao carregar tarefas");
+  }
+}
+</script>
+
+<script>
+function renderizarTarefas(tarefas) {
+  const container = document.getElementById("tasksContainer");
+  container.innerHTML = "";
+
+  tarefas.forEach(tarefa => {
+    const taskRow = document.createElement("div");
+    taskRow.classList.add("task-row");
+    taskRow.dataset.id = tarefa.id;
+
+    const concluida = tarefa.statusTarefa === "REALIZADO";
+
+    taskRow.innerHTML = `
+      <div class="task-left">
+        <input 
+          type="checkbox" 
+          ${concluida ? "checked" : ""} 
+          data-id="${tarefa.id}"
+        />
+        <span class="task-name">${tarefa.tituloTarefa}</span>
+      </div>
+
+      <div class="task-right">
+        <span class="status ${concluida ? "done" : "progress"}">
+          ${concluida ? "Concluído" : "Desenvolvimento"}
+        </span>
+        <span class="task-date">
+          ${formatarData(tarefa.dataVencimento)}
+        </span>
+        <img src="Assets/mover.png" class="menu-icon btn-menu" alt="">
+        <div class="dropdown hidden">
+            <button class="btn-delete">Excluir</button>
+        </div>
+      </div>
+    `;
+
+    const checkbox = taskRow.querySelector("input[type='checkbox']");
+    checkbox.addEventListener("change", () => {
+      atualizarStatusTarefa(tarefa, checkbox.checked);
+    });
+
+    container.appendChild(taskRow);
+  });
+}
+</script>
+
+<script>
+async function atualizarStatusTarefa(tarefa, concluida) {
+  const body = {
+    tituloTarefa: tarefa.tituloTarefa,
+    descricao: tarefa.descricao,
+    statusTarefa: concluida ? "REALIZADO" : "PENDENTE",
+    prioridade: tarefa.prioridade,
+    data_vencimento: tarefa.dataVencimento,
+    usuario: {
+      id: tarefa.usuario.id
+    }
+  };
+
+  try {
+    const response = await fetch(
+      `http://localhost:8080/tarefas/${tarefa.id}`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      }
+    );
+
+    if (!response.ok) throw new Error("Erro ao atualizar tarefa");
+
+    location.reload();
+
+  } catch (e) {
+    alert("Erro ao atualizar tarefa");
+    console.error(e);
+  }
+}
+</script>
+
+<script>
+function formatarData(data) {
+  if (!data) return "—";
+  return new Date(data).toLocaleDateString("pt-BR");
+}
+</script>
+
+<script>
+document.addEventListener("click", async (e) => {
+
+  // Abrir/fechar menu
+  if (e.target.classList.contains("btn-menu")) {
+    const dropdown = e.target.nextElementSibling;
+    dropdown.classList.toggle("hidden");
+    return;
+  }
+
+  // Deletar tarefa
+  if (e.target.classList.contains("btn-delete")) {
+    const taskRow = e.target.closest(".task-row");
+    const idTarefa = taskRow.dataset.id;
+
+
+    if (!confirm("Deseja excluir esta tarefa?")) return;
+
+    try {
+      const response = await fetch(
+        `http://localhost:8080/tarefas/${idTarefa}`,
+        { method: "DELETE" }
+      );
+
+      if (!response.ok) {
+        throw new Error("Erro ao excluir tarefa");
+      }
+
+      taskRow.remove();
+
+    } catch (error) {
+      console.error(error);
+      alert("Erro ao excluir tarefa");
+    }
+  }
+
+  // Fecha menus ao clicar fora
+  document.querySelectorAll(".dropdown").forEach(menu => {
+    if (!menu.contains(e.target) && !menu.previousElementSibling.contains(e.target)) {
+      menu.classList.add("hidden");
+    }
+  });
+});
+</script>
+
+<div class="modal hidden" id="modalTarefa">
+  <div class="modal-content">
+    <h3>Nova Tarefa</h3>
+
+    <label>Título</label>
+    <input type="text" id="tituloTarefa">
+
+    <label>Descrição</label>
+    <textarea id="descricaoTarefa"></textarea>
+
+    <label>Prioridade</label>
+    <select id="prioridadeTarefa">
+      <option value="1">Baixa</option>
+      <option value="2">Média</option>
+      <option value="3">Alta</option>
+    </select>
+
+    <label>Data de vencimento</label>
+    <input type="datetime-local" id="dataVencimento">
+
+    <div class="modal-actions">
+      <button id="btnCancelarTarefa">Cancelar</button>
+      <button id="btnSalvarTarefa">Salvar</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
 
