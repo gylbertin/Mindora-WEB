@@ -74,19 +74,6 @@
 
     const monthNames = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
 
-    const sampleEvents = {
-      "2025-0": [
-        { day: 10, color:"blue", length:"normal", done:false },
-        { day: 18, color:"blue", length:"normal", done:false },
-        { day: 19, color:"orange", length:"normal", done:false },
-        { day: 22, color:"green", length:"normal", lefted:true, tag:"Revisar Trabalho", done:false},
-        { day: 23, color:"orange", length:"small", done:true }
-      ],
-      "2025-1": [
-        { day: 2, color:"blue", length:"normal", done:false },
-        { day: 3, color:"blue", length:"normal", done:true }
-      ]
-    };
 
     const monthSelect = document.getElementById('monthSelect');
     const yearInput = document.getElementById('yearInput');
@@ -188,7 +175,7 @@
         }
       }
 
-      const evs = sampleEvents[key(year,month)] || [];
+      const evs = ;
       evs.forEach(ev => {
         const dayStr = String(ev.day).padStart(2,'0');
         const dateSpans = monthGrid.querySelectorAll('.date');
