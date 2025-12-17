@@ -95,6 +95,7 @@ body{
 .event-bar.blue{ background:#1976f3; box-shadow:0 3px 8px rgba(25,118,243,0.18); }
 .event-bar.orange{ background:#f59e42; box-shadow:0 3px 8px rgba(245,158,66,0.12); }
 .event-bar.green{ background:#2ecc71; box-shadow:0 3px 8px rgba(46,204,113,0.12); }
+.event-bar.red{ background:#ef4444; box-shadow:0 3px 8px rgba(231,76,60,0.12); }
 .event-bar.lefted{ left:26px; }
 
 .event-tag-wrap{
@@ -124,4 +125,4 @@ body{
 .event-status[data-done="true"] .status-icon .check{ fill: white; display:block; transform:scale(1); }
 .event-status[data-done="false"] .status-icon .check{ display:none; }
 .event-status .status-icon{ display:block; }
-.event-label{ background: white; padding:6px 10px; border-radius:8px; border:1px solid rgba(0,0,0,0.06); font-size:13px; box-shadow:0 6px 12px rgba(7,18,39,0.06); }
+.event-label{ background: white; padding:6px 10px; border-radius:8px; border:1px solid rgba(0,0,0,0.06); font-size:13px; box-shadow:0 6px 12px rgba(7,18,39,0.06); font-size: 0.65rem; white-space: nowrap; text-overflow: ellipsis;}

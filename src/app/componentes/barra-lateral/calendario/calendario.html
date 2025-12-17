@@ -74,19 +74,41 @@
 
     const monthNames = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
 
-     const sampleEvents = {
-      "2025-0": [
-        { day: 10, color:"blue", length:"normal", done:false },
-        { day: 18, color:"blue", length:"normal", done:false },
-        { day: 19, color:"orange", length:"normal", done:false },
-        { day: 22, color:"green", length:"normal", lefted:true, tag:"Revisar Trabalho", done:false},
-        { day: 23, color:"orange", length:"small", done:true }
-      ],
-      "2025-1": [
-        { day: 2, color:"blue", length:"normal", done:false },
-        { day: 3, color:"blue", length:"normal", done:true }
-      ]
-    };
+     async function  buscarTarefas(ano, mes) {
+      const response = await fetch(`http://localHost:8080/tarefas/usuario/${idUsuario}?ano=${ano}&mes=${mes + 1}`);
+     
+      if (!response.ok) {
+        console.error("Erro ao buscar tarefas");
+        return [];
+      }
+
+      return await response.json();
+    }
+
+    function agruparPorDiaComMaiorPrioridade(tarefas) {
+      const mapa = {};
+
+      tarefas.forEach(t => {
+        const data = new Date(t.dataVencimento);
+        const dia = data.getDate();
+
+        if (!mapa[dia]) {
+          mapa[dia] = t;
+        } else {
+          if (t.prioridade > mapa[dia].prioridade) {
+            mapa[dia] = t;
+          }
+        }
+      });
+
+      return mapa;
+    }
+
+    function corPorPrioridade (prioridade) {
+      if (prioridade >= 3) return "red";
+      if (prioridade === 2) return "orange";
+      if (prioridade === 1) return "blue";
+    }
 
     const monthSelect = document.getElementById('monthSelect');
     const yearInput = document.getElementById('yearInput');
@@ -188,26 +210,37 @@
         }
       }
 
-      const evs = sampleEvents[key(year,month)] || [];
-      evs.forEach(ev => {
-        const dayStr = String(ev.day).padStart(2,'0');
-        const dateSpans = monthGrid.querySelectorAll('.date');
-        for(const ds of dateSpans){
-          if(ds.textContent === dayStr){
-            const cell = ds.closest('.day');
+      buscarTarefas(year, month).then(tarefas => {
+        const tarefasPorDia = agruparPorDiaComMaiorPrioridade(tarefas);
 
-            const bar = createEventBar(ev);
+        Object.values(tarefasPorDia).forEach(tarefa => {
+          const data = new Date(tarefa.dataVencimento);
+          const dia = String(data.getDate()).padStart(2,'0');
 
-            cell.appendChild(bar);
+          const dateSpans = monthGrid.querySelectorAll('.date');
 
-            if(ev.tag){
+          for(const ds of dateSpans) {
+            if (ds.textContent === dia) {
+              const cell = ds.closest('.day');
+
+              const ev = {
+                color: corPorPrioridade(tarefa.prioridade),
+                length: "normal",
+                done: tarefa.statusTarefa === "REALIZADO",
+                tag: tarefa.tituloTarefa
+              };
+
+              const bar = createEventBar(ev);
               const tag = createEventTag(ev);
+
+              cell.appendChild(bar);
               cell.appendChild(tag);
+              break;
             }
-            break;
-     }
-    }
-    });
+          }
+        })
+      });
+
     }
 
     function changeMonth(delta){

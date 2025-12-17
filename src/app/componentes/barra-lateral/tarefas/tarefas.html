@@ -136,7 +136,7 @@
       descricao: descricao,
       statusTarefa: "PENDENTE",
       prioridade: Number(prioridade),
-      data_vencimento: new Date(dataVencimento).toISOString(),
+      dataVencimento: new Date(dataVencimento).toISOString(),
       usuario: {
         id: Number(idUsuario)
       }
@@ -236,7 +236,7 @@ async function atualizarStatusTarefa(tarefa, concluida) {
     descricao: tarefa.descricao,
     statusTarefa: concluida ? "REALIZADO" : "PENDENTE",
     prioridade: tarefa.prioridade,
-    data_vencimento: tarefa.dataVencimento,
+    dataVencimento: tarefa.dataVencimento,
     usuario: {
       id: tarefa.usuario.id
     }
